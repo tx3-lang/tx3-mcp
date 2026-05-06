@@ -1,4 +1,5 @@
 use anyhow::Result;
+use clap::Parser;
 use rmcp::{transport::stdio, ServiceExt};
 use tracing_subscriber::EnvFilter;
 
@@ -8,38 +9,18 @@ mod server;
 mod tii_emit;
 mod tools;
 
-const VERSION: &str = env!("CARGO_PKG_VERSION");
-
-fn handle_cli_flags() -> Option<()> {
-    for arg in std::env::args().skip(1) {
-        match arg.as_str() {
-            "--version" | "-V" => {
-                // tx3up parses the LAST whitespace-separated token of stdout
-                // as a semver Version (see up/src/bin.rs). Keep this format
-                // stable: `<binary-name> <version>\n`.
-                println!("tx3-mcp {VERSION}");
-                return Some(());
-            }
-            "--help" | "-h" => {
-                println!("tx3-mcp {VERSION} — MCP server for the Tx3 toolchain");
-                println!();
-                println!("USAGE:");
-                println!("    tx3-mcp              Run the MCP server on stdio (default)");
-                println!("    tx3-mcp --version    Print version and exit");
-                println!("    tx3-mcp --help       Print this help and exit");
-                return Some(());
-            }
-            _ => {}
-        }
-    }
-    None
-}
+/// MCP server for the Tx3 toolchain.
+///
+/// Run with no arguments to start the server on stdio. tx3up reads the
+/// `--version` output to detect installed components — clap's default
+/// format (`tx3-mcp <semver>\n`) matches what tx3up's parser expects.
+#[derive(Parser, Debug)]
+#[command(name = "tx3-mcp", version, about, long_about = None)]
+struct Cli {}
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    if handle_cli_flags().is_some() {
-        return Ok(());
-    }
+    Cli::parse();
 
     tracing_subscriber::fmt()
         .with_env_filter(
@@ -49,7 +30,7 @@ async fn main() -> Result<()> {
         .with_ansi(false)
         .init();
 
-    tracing::info!("tx3-mcp starting (version {VERSION})");
+    tracing::info!("tx3-mcp starting (version {})", env!("CARGO_PKG_VERSION"));
 
     let service = server::Tx3Server::new()
         .serve(stdio())

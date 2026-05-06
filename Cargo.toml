@@ -1,0 +1,42 @@
+[package]
+name = "tx3-mcp"
+version = "0.17.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "MCP server exposing the Tx3 toolchain (parse/check/lower/compile) as structured tools for AI agents and editors"
+repository = "https://github.com/tx3-lang/tx3-mcp"
+homepage = "https://github.com/tx3-lang/tx3-mcp"
+keywords = ["tx3", "mcp", "cardano", "claude"]
+readme = "README.md"
+
+[[bin]]
+name = "tx3-mcp"
+path = "src/main.rs"
+
+[dependencies]
+tx3-lang = "=0.17.0"
+tx3-cardano = "=0.17.0"
+tx3-tir = "=0.17.0"
+
+rmcp = { version = "1.6", features = ["server", "macros", "schemars", "transport-io"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "io-std", "sync", "fs"] }
+
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+schemars = "1"
+
+miette = "7"
+thiserror = "2"
+anyhow = "1"
+
+toml = "0.8"
+hex = "0.4"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["test-util"] }
+
+[profile.dist]
+inherits = "release"
+lto = "thin"

@@ -2,12 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2026-05-06
+
+### 🚀 Features
+
+- Handle --version (and --help) so tx3up can detect the install
+
+### 🚜 Refactor
+
+- Use clap derive for --version / --help
+
 ## [0.2.0] - 2026-05-06
 
 ### 🚀 Features
 
 - Add tx3_invoke MCP tool
 - Rewrite tx3_invoke to use tx3-sdk (resolve-only)
+
+### 💼 Other
+
+- V0.2.0
 
 ### 🚜 Refactor
 

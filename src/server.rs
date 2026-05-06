@@ -7,8 +7,8 @@ use rmcp::{
 };
 
 use crate::tools::{
-    self, ApplyArgsRequest, CheckRequest, ExampleGetRequest, InspectProjectRequest, LowerRequest,
-    ParseRequest,
+    self, ApplyArgsRequest, CheckRequest, ExampleGetRequest, InspectProjectRequest, InvokeRequest,
+    LowerRequest, ParseRequest,
 };
 
 #[derive(Clone)]
@@ -100,6 +100,17 @@ impl Tx3Server {
         let resp = tools::run_example_get(req);
         json_result(&resp)
     }
+
+    #[tool(
+        description = "Assemble, sign, and (optionally) submit a Tx3 transaction by shelling out to `trix invoke`. Requires `trix` on PATH and a project directory containing `trix.toml`. Pass `args` as a JSON object matching what `trix invoke --args-json` expects (use `@walletname` for wallet addresses). Set `skip_submit: true` to assemble+sign without submitting. stdin is closed before exec, so any cshell interactive prompt fails fast — make sure your args fully specify the transaction and signer."
+    )]
+    async fn tx3_invoke(
+        &self,
+        Parameters(req): Parameters<InvokeRequest>,
+    ) -> Result<CallToolResult, McpError> {
+        let resp = tools::run_invoke(req).await;
+        json_result(&resp)
+    }
 }
 
 #[tool_handler]
@@ -113,6 +124,7 @@ impl ServerHandler for Tx3Server {
              Use tx3_parse to inspect AST, tx3_check to surface parse+analyze diagnostics, \
              tx3_lower for TIR of a single transaction, tx3_apply_args to bind arguments \
              and produce post-args TIR, tx3_inspect_project to summarize a trix.toml project, \
+             tx3_invoke to assemble/sign/submit transactions via `trix invoke`, \
              and tx3_examples_list/tx3_example_get for curated learning examples."
                     .to_string(),
             )

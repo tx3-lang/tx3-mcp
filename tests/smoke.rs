@@ -45,7 +45,7 @@ const INITED: &str = r#"{"jsonrpc":"2.0","method":"notifications/initialized"}"#
 const LIST: &str = r#"{"jsonrpc":"2.0","id":2,"method":"tools/list"}"#;
 
 #[test]
-fn lists_seven_tools() {
+fn lists_eight_tools() {
     let responses = drive(&[INIT, INITED, LIST]);
     let list = responses
         .iter()
@@ -68,6 +68,7 @@ fn lists_seven_tools() {
         "tx3_lower",
         "tx3_apply_args",
         "tx3_inspect_project",
+        "tx3_invoke",
         "tx3_examples_list",
         "tx3_example_get",
     ];

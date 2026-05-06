@@ -41,3 +41,17 @@ tokio = { version = "1", features = ["test-util"] }
 [profile.dist]
 inherits = "release"
 lto = "thin"
+
+[package.metadata.release]
+push = false
+publish = false
+tag-name = "v{{version}}"
+pre-release-commit-message = "release: v{{version}}"
+pre-release-hook = [
+    "git",
+    "cliff",
+    "-o",
+    "CHANGELOG.md",
+    "--tag",
+    "{{version}}",
+]

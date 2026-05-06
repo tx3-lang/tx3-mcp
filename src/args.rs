@@ -1,10 +1,10 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashMap};
 
 use anyhow::{anyhow, Result};
 use serde_json::Value;
 use tx3_tir::reduce::ArgValue;
 
-/// Convert a JSON object into the BTreeMap<String, ArgValue> expected by
+/// Convert a map of JSON args into the BTreeMap<String, ArgValue> expected by
 /// `tx3_lang::Workspace::apply_args`.
 ///
 /// Conventions:
@@ -13,13 +13,9 @@ use tx3_tir::reduce::ArgValue;
 ///  - JSON strings → `ArgValue::String`
 ///  - JSON booleans → `ArgValue::Bool`
 ///  - JSON nulls / objects / arrays are rejected (callers must pre-shape)
-pub fn args_from_json(args: &Value) -> Result<BTreeMap<String, ArgValue>> {
-    let obj = args
-        .as_object()
-        .ok_or_else(|| anyhow!("expected `args` to be a JSON object"))?;
-
+pub fn args_from_map(args: &HashMap<String, Value>) -> Result<BTreeMap<String, ArgValue>> {
     let mut out = BTreeMap::new();
-    for (k, v) in obj {
+    for (k, v) in args {
         out.insert(k.clone(), value_to_arg(v)?);
     }
     Ok(out)
@@ -54,10 +50,14 @@ mod tests {
     use super::*;
     use serde_json::json;
 
+    fn map(v: serde_json::Value) -> HashMap<String, Value> {
+        v.as_object().unwrap().clone().into_iter().collect()
+    }
+
     #[test]
     fn parses_simple_args() {
-        let v = json!({ "n": 42, "flag": true, "name": "hello", "key": "0xdeadbeef" });
-        let args = args_from_json(&v).unwrap();
+        let v = map(json!({ "n": 42, "flag": true, "name": "hello", "key": "0xdeadbeef" }));
+        let args = args_from_map(&v).unwrap();
         assert!(matches!(args["n"], ArgValue::Int(42)));
         assert!(matches!(args["flag"], ArgValue::Bool(true)));
         assert!(matches!(&args["name"], ArgValue::String(s) if s == "hello"));
@@ -66,8 +66,8 @@ mod tests {
 
     #[test]
     fn rejects_null_and_nested() {
-        assert!(args_from_json(&json!({ "x": null })).is_err());
-        assert!(args_from_json(&json!({ "x": [1, 2] })).is_err());
-        assert!(args_from_json(&json!({ "x": { "y": 1 } })).is_err());
+        assert!(args_from_map(&map(json!({ "x": null }))).is_err());
+        assert!(args_from_map(&map(json!({ "x": [1, 2] }))).is_err());
+        assert!(args_from_map(&map(json!({ "x": { "y": 1 } }))).is_err());
     }
 }

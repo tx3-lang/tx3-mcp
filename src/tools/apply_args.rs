@@ -1,9 +1,11 @@
+use std::collections::HashMap;
+
 use rmcp::schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tx3_lang::Workspace;
 
-use crate::{args::args_from_json, diagnostics::Diagnostic};
+use crate::{args::args_from_map, diagnostics::Diagnostic};
 
 #[derive(Debug, Deserialize, JsonSchema)]
 pub struct ApplyArgsRequest {
@@ -11,10 +13,10 @@ pub struct ApplyArgsRequest {
     pub source: String,
     /// Name of the `tx <name>` block.
     pub tx_name: String,
-    /// JSON object mapping arg names to values. Strings starting with `0x` are
-    /// treated as hex bytes; other strings are passed through. Numbers must fit
-    /// in i64. Arrays/objects/nulls are rejected.
-    pub args: Value,
+    /// Map of arg names to values. Strings starting with `0x` are treated as
+    /// hex bytes; other strings are passed through. Numbers must fit in i64.
+    /// Nested arrays/objects/nulls are rejected by the converter.
+    pub args: HashMap<String, Value>,
 }
 
 #[derive(Debug, Serialize)]
@@ -28,7 +30,7 @@ pub struct ApplyArgsResponse {
 }
 
 pub fn run(req: ApplyArgsRequest) -> ApplyArgsResponse {
-    let args = match args_from_json(&req.args) {
+    let args = match args_from_map(&req.args) {
         Ok(a) => a,
         Err(e) => {
             return ApplyArgsResponse {

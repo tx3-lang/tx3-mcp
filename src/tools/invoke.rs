@@ -30,8 +30,9 @@ pub struct InvokeRequest {
     /// Name of the `tx <name>` block to invoke. SDK requires this explicitly —
     /// no inference from prompts like cshell does.
     pub tx_name: String,
-    /// JSON object of arguments. Same shape `trix invoke --args-json` accepts.
-    pub args: Value,
+    /// Map of tx parameter names to values. Same shape `trix invoke --args-json`
+    /// accepts. Pass an empty object `{}` for txs without parameters.
+    pub args: HashMap<String, Value>,
     /// Optional profile name. Defaults to the first profile defined in
     /// `trix.toml`, then to `local` if none are defined.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -59,10 +60,6 @@ pub struct InvokeResponse {
 }
 
 pub async fn run(req: InvokeRequest) -> InvokeResponse {
-    if !req.args.is_object() {
-        return err_only("`args` must be a JSON object");
-    }
-
     let project_dir = PathBuf::from(&req.project_dir);
     let trix_toml_path = project_dir.join("trix.toml");
 
@@ -125,7 +122,7 @@ pub async fn run(req: InvokeRequest) -> InvokeResponse {
         }
     }
 
-    let args_map = arg_map_from(&req.args);
+    let args_map: tx3_sdk::core::ArgMap = req.args.into_iter().collect();
     match client.tx(&req.tx_name).args(args_map).resolve().await {
         Ok(resolved) => InvokeResponse {
             ok: true,
@@ -220,16 +217,6 @@ fn protocol_meta_from(trix_toml: &toml::Value) -> ProtocolMeta {
         version: s("version").unwrap_or_else(|| "0.0.1".to_string()),
         description: s("description"),
     }
-}
-
-fn arg_map_from(args: &Value) -> tx3_sdk::core::ArgMap {
-    let mut out = tx3_sdk::core::ArgMap::new();
-    if let Some(obj) = args.as_object() {
-        for (k, v) in obj {
-            out.insert(k.clone(), v.clone());
-        }
-    }
-    out
 }
 
 fn err_only(msg: impl Into<String>) -> InvokeResponse {

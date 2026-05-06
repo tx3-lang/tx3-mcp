@@ -28,9 +28,9 @@ pub fn run(req: CheckRequest) -> anyhow::Result<CheckResponse> {
     };
 
     let diagnostics = check_source(&source, req.path.as_deref());
-    let ok = diagnostics.iter().all(|d| {
-        !matches!(d.severity, crate::diagnostics::Severity::Error)
-    });
+    let ok = diagnostics
+        .iter()
+        .all(|d| !matches!(d.severity, crate::diagnostics::Severity::Error));
 
     Ok(CheckResponse { ok, diagnostics })
 }

@@ -43,9 +43,9 @@ fn value_to_arg(v: &Value) -> Result<ArgValue> {
             }
         }
         Value::Null => Err(anyhow!("null arg values are not supported")),
-        Value::Array(_) | Value::Object(_) => {
-            Err(anyhow!("nested arrays/objects in args are not supported in v1"))
-        }
+        Value::Array(_) | Value::Object(_) => Err(anyhow!(
+            "nested arrays/objects in args are not supported in v1"
+        )),
     }
 }
 

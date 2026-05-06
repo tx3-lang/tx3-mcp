@@ -1,6 +1,8 @@
 use rmcp::{
     handler::server::{router::tool::ToolRouter, wrapper::Parameters},
-    model::{CallToolResult, Content, Implementation, ProtocolVersion, ServerCapabilities, ServerInfo},
+    model::{
+        CallToolResult, Content, Implementation, ProtocolVersion, ServerCapabilities, ServerInfo,
+    },
     tool, tool_handler, tool_router, ErrorData as McpError, ServerHandler,
 };
 
@@ -103,18 +105,17 @@ impl Tx3Server {
 #[tool_handler]
 impl ServerHandler for Tx3Server {
     fn get_info(&self) -> ServerInfo {
-        ServerInfo::new(
-            ServerCapabilities::builder().enable_tools().build(),
-        )
-        .with_server_info(Implementation::from_build_env())
-        .with_protocol_version(ProtocolVersion::V_2024_11_05)
-        .with_instructions(
-            "tx3-mcp exposes the Tx3 toolchain as MCP tools. \
+        ServerInfo::new(ServerCapabilities::builder().enable_tools().build())
+            .with_server_info(Implementation::from_build_env())
+            .with_protocol_version(ProtocolVersion::V_2024_11_05)
+            .with_instructions(
+                "tx3-mcp exposes the Tx3 toolchain as MCP tools. \
              Use tx3_parse to inspect AST, tx3_check to surface parse+analyze diagnostics, \
              tx3_lower for TIR of a single transaction, tx3_apply_args to bind arguments \
              and produce post-args TIR, tx3_inspect_project to summarize a trix.toml project, \
-             and tx3_examples_list/tx3_example_get for curated learning examples.".to_string(),
-        )
+             and tx3_examples_list/tx3_example_get for curated learning examples."
+                    .to_string(),
+            )
     }
 }
 

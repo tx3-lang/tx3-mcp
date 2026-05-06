@@ -3,9 +3,9 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tx3_lang::{analyzing, lowering, parsing};
 
-use crate::diagnostics::{from_miette, Diagnostic};
 #[allow(unused_imports)]
 use crate::diagnostics::Severity;
+use crate::diagnostics::{from_miette, Diagnostic};
 
 #[derive(Debug, Deserialize, JsonSchema)]
 pub struct LowerRequest {

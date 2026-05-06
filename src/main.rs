@@ -19,9 +19,12 @@ async fn main() -> Result<()> {
 
     tracing::info!("tx3-mcp starting (version {})", env!("CARGO_PKG_VERSION"));
 
-    let service = server::Tx3Server::new().serve(stdio()).await.inspect_err(|e| {
-        tracing::error!("serving error: {e:?}");
-    })?;
+    let service = server::Tx3Server::new()
+        .serve(stdio())
+        .await
+        .inspect_err(|e| {
+            tracing::error!("serving error: {e:?}");
+        })?;
 
     service.waiting().await?;
     Ok(())

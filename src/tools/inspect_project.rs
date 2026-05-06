@@ -120,7 +120,11 @@ fn summarise(source: &str, main_path: &Path, trix_toml: toml::Value) -> InspectP
             parties: Vec::new(),
             assets: Vec::new(),
             policies: Vec::new(),
-            diagnostics: vec![from_miette(&e, Some(source), Some(&main_path.display().to_string()))],
+            diagnostics: vec![from_miette(
+                &e,
+                Some(source),
+                Some(&main_path.display().to_string()),
+            )],
             error: None,
         };
     }
@@ -183,10 +187,7 @@ fn summarise(source: &str, main_path: &Path, trix_toml: toml::Value) -> InspectP
                 .iter()
                 .map(|b| {
                     let dbg = format!("{b:?}");
-                    dbg.split('(')
-                        .next()
-                        .unwrap_or("Unknown")
-                        .to_string()
+                    dbg.split('(').next().unwrap_or("Unknown").to_string()
                 })
                 .collect(),
         })

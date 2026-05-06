@@ -99,7 +99,14 @@ pub fn from_miette<E: MietteDiagnostic + ?Sized>(
         (Some(labels), Some(src)) => {
             let index = LineIndex::new(src);
             labels
-                .map(|l| span_from_labeled(&index, src, l.inner().offset()..l.inner().offset() + l.inner().len(), l.label().map(|s| s.to_string())))
+                .map(|l| {
+                    span_from_labeled(
+                        &index,
+                        src,
+                        l.inner().offset()..l.inner().offset() + l.inner().len(),
+                        l.label().map(|s| s.to_string()),
+                    )
+                })
                 .collect()
         }
         _ => Vec::new(),

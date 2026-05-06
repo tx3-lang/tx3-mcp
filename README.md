@@ -58,9 +58,9 @@ To use `tx3-mcp` from any MCP-compatible client (editor extensions, custom agent
 }
 ```
 
-## Versioning
+## Compatibility
 
-`tx3-mcp` versions track the Tx3 minor release they pin against. Today: `0.17.x` ships against `tx3-lang = "=0.17.x"`.
+`tx3-mcp` 0.1.x is compatible with **tx3 0.17.x**. The dependency is pinned (`tx3-lang = "=0.17"`) in `Cargo.toml`; new tx3 minor releases require a corresponding tx3-mcp release. Compatibility for newer tx3 versions will be tracked in this README and in the [`tx3-lang/toolchain`](https://github.com/tx3-lang/toolchain) channel manifest consumed by `tx3up`.
 
 ## License
 

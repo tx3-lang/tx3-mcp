@@ -45,6 +45,26 @@ const INITED: &str = r#"{"jsonrpc":"2.0","method":"notifications/initialized"}"#
 const LIST: &str = r#"{"jsonrpc":"2.0","id":2,"method":"tools/list"}"#;
 
 #[test]
+fn version_flag_emits_tx3up_compatible_format() {
+    // tx3up parses `<binary> --version` stdout via:
+    //   String::from_utf8(stdout).split_whitespace().last() → Version::parse(_)
+    // Lock in that contract: stdout's last whitespace-separated token must
+    // be a semver-parseable string equal to CARGO_PKG_VERSION.
+    let exe = env!("CARGO_BIN_EXE_tx3-mcp");
+    let out = std::process::Command::new(exe)
+        .arg("--version")
+        .output()
+        .expect("spawn tx3-mcp --version");
+    assert!(out.status.success(), "exit non-zero: {:?}", out.status);
+    let stdout = String::from_utf8(out.stdout).expect("utf8 stdout");
+    let last = stdout
+        .split_whitespace()
+        .last()
+        .expect("at least one whitespace-separated token");
+    assert_eq!(last, env!("CARGO_PKG_VERSION"));
+}
+
+#[test]
 fn lists_eight_tools() {
     let responses = drive(&[INIT, INITED, LIST]);
     let list = responses

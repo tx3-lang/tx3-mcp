@@ -102,7 +102,7 @@ impl Tx3Server {
     }
 
     #[tool(
-        description = "Assemble, sign, and (optionally) submit a Tx3 transaction by shelling out to `trix invoke`. Requires `trix` on PATH and a project directory containing `trix.toml`. Pass `args` as a JSON object matching what `trix invoke --args-json` expects (use `@walletname` for wallet addresses). Set `skip_submit: true` to assemble+sign without submitting. stdin is closed before exec, so any cshell interactive prompt fails fast — make sure your args fully specify the transaction and signer."
+        description = "Resolve a Tx3 transaction against the project's TRP endpoint and return the unsigned tx CBOR (hex) plus its hash. Reads `trix.toml` from `project_dir`, builds the TII in-process from `[protocol].main`, picks the TRP endpoint from the named profile (or first profile), and posts to it via the tx3-sdk. **Does NOT sign or submit in v1** — the tool is pure inspection. Use `parties` to bind party names to bech32 addresses for transactions that read addresses at resolve-time. Returns parse/analyze diagnostics in `diagnostics[]` and SDK/TRP errors in `error`."
     )]
     async fn tx3_invoke(
         &self,
@@ -124,7 +124,7 @@ impl ServerHandler for Tx3Server {
              Use tx3_parse to inspect AST, tx3_check to surface parse+analyze diagnostics, \
              tx3_lower for TIR of a single transaction, tx3_apply_args to bind arguments \
              and produce post-args TIR, tx3_inspect_project to summarize a trix.toml project, \
-             tx3_invoke to assemble/sign/submit transactions via `trix invoke`, \
+             tx3_invoke to resolve a transaction against a TRP endpoint (returns unsigned CBOR), \
              and tx3_examples_list/tx3_example_get for curated learning examples."
                     .to_string(),
             )

@@ -5,6 +5,7 @@ use tracing_subscriber::EnvFilter;
 mod args;
 mod diagnostics;
 mod server;
+mod tii_emit;
 mod tools;
 
 #[tokio::main]

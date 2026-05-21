@@ -20,7 +20,7 @@ Diagnostics are rendered as structured JSON with severity, code, message, help, 
 
 ## Installation
 
-The recommended way to install `tx3-mcp` is via [`tx3up`](https://github.com/tx3-lang/up), which manages the entire Tx3 toolchain:
+The recommended way to install `tx3-mcp` is via [`tx3up`](https://github.com/tx3-lang/tx3up), which manages the entire Tx3 toolchain:
 
 ```sh
 tx3up

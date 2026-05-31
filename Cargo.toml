@@ -14,8 +14,8 @@ name = "tx3-mcp"
 path = "src/main.rs"
 
 [dependencies]
-tx3-lang = "=0.17.0"
-tx3-cardano = "=0.17.0"
+tx3-lang = "=0.21.0"
+tx3-cardano = "=0.21.0"
 tx3-tir = "=0.17.0"
 tx3-sdk = "=0.11"
 

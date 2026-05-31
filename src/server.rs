@@ -72,7 +72,7 @@ impl Tx3Server {
     }
 
     #[tool(
-        description = "Read a `trix.toml` and the project's main .tx3 file, then summarize the parsed AST: parties, assets, policies, and per-transaction shape (params, input/output/mint/burn counts, validity, signers, metadata, cardano blocks)."
+        description = "Read a `trix.toml` and the project's main .tx3 file, then summarize the parsed AST: parties, assets, policies, user-defined functions (name, params, return type), and per-transaction shape (params, input/output/mint/burn counts, validity, signers, metadata, cardano blocks)."
     )]
     fn tx3_inspect_project(
         &self,

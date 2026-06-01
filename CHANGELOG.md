@@ -2,11 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2026-06-01
+
+### 🚀 Features
+
+- Support user-defined functions (#2)
+
+### 💼 Other
+
+- V0.4.0
+
+### ⚙️ Miscellaneous Tasks
+
+- Update tx3up link after up→tx3up rename (#1)
+
 ## [0.3.0] - 2026-05-06
 
 ### 🚀 Features
 
 - Handle --version (and --help) so tx3up can detect the install
+
+### 💼 Other
+
+- V0.3.0
 
 ### 🚜 Refactor
 

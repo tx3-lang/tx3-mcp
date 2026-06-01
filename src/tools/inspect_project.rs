@@ -72,7 +72,7 @@ pub fn run(req: InspectProjectRequest) -> InspectProjectResponse {
                 parties: Vec::new(),
                 assets: Vec::new(),
                 policies: Vec::new(),
-            functions: Vec::new(),
+                functions: Vec::new(),
                 diagnostics: Vec::new(),
                 error: Some(format!("failed to read {}: {e}", trix_toml_path.display())),
             }
@@ -89,7 +89,7 @@ pub fn run(req: InspectProjectRequest) -> InspectProjectResponse {
                 parties: Vec::new(),
                 assets: Vec::new(),
                 policies: Vec::new(),
-            functions: Vec::new(),
+                functions: Vec::new(),
                 diagnostics: Vec::new(),
                 error: Some(format!("invalid trix.toml: {e}")),
             }
@@ -113,7 +113,7 @@ pub fn run(req: InspectProjectRequest) -> InspectProjectResponse {
                 parties: Vec::new(),
                 assets: Vec::new(),
                 policies: Vec::new(),
-            functions: Vec::new(),
+                functions: Vec::new(),
                 diagnostics: Vec::new(),
                 error: Some(format!("failed to read {}: {e}", main_path.display())),
             }
@@ -165,7 +165,7 @@ fn summarise(source: &str, main_path: &Path, trix_toml: toml::Value) -> InspectP
                 parties: Vec::new(),
                 assets: Vec::new(),
                 policies: Vec::new(),
-            functions: Vec::new(),
+                functions: Vec::new(),
                 diagnostics: analyze_diags,
                 error: Some("workspace has no AST".to_string()),
             }

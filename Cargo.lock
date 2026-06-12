@@ -3019,9 +3019,9 @@ checksum = "e421abadd41a4225275504ea4d6566923418b7f05506fbc9c0fe86ba7396114b"
 
 [[package]]
 name = "tx3-cardano"
-version = "0.21.0"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85887868dcd17f73a22da5743a1cefd1964f2d1770e1c353eff0a9a8c7c1c639"
+checksum = "4236a96b6aca1c023ade08376b9dea9896febe75f45db1415c3d40c213a2b93d"
 dependencies = [
  "hex",
  "pallas",
@@ -3034,9 +3034,9 @@ dependencies = [
 
 [[package]]
 name = "tx3-lang"
-version = "0.21.0"
+version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95c2ad1c448f7b7e79f267a4bdba93ee1eb67047988d59eb0d072bab66499aa1"
+checksum = "9d34a4052a26da8967187bec9be032233a231770d43569043aaf87f8d3e9f54e"
 dependencies = [
  "ciborium",
  "hex",
@@ -3097,9 +3097,9 @@ dependencies = [
 
 [[package]]
 name = "tx3-tir"
-version = "0.17.0"
+version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "152e332c5ab744e8f17d54dfa4b6e3e177d5055141a1f37625303d4613277a72"
+checksum = "4bd8b43d04c3d116e901407cf4c6fa4949938f8904dddf7088cb97efcacd8bb2"
 dependencies = [
  "ciborium",
  "hex",

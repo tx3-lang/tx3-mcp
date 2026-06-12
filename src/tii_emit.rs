@@ -123,6 +123,17 @@ fn map_ast_type_to_json_schema(r#type: &ast::Type) -> Value {
             "type": "object",
             "additionalProperties": map_ast_type_to_json_schema(value)
         }),
+        // A tuple is a fixed-length, positionally-typed array.
+        ast::Type::Tuple(elements) => json!({
+            "type": "array",
+            "prefixItems": elements
+                .iter()
+                .map(map_ast_type_to_json_schema)
+                .collect::<Vec<_>>(),
+            "items": false,
+            "minItems": elements.len(),
+            "maxItems": elements.len()
+        }),
         ast::Type::Custom(_) => json!({"type": "object"}),
         ast::Type::Undefined => json!({"type": "null"}),
         ast::Type::Utxo => json!({ "$ref": "https://tx3.land/specs/v1beta0/core#Utxo" }),

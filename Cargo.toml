@@ -8,6 +8,7 @@ repository = "https://github.com/tx3-lang/tx3-mcp"
 homepage = "https://github.com/tx3-lang/tx3-mcp"
 keywords = ["tx3", "mcp", "cardano", "claude"]
 readme = "README.md"
+publish = false
 
 [[bin]]
 name = "tx3-mcp"
@@ -43,6 +44,9 @@ tokio = { version = "1", features = ["test-util"] }
 inherits = "release"
 lto = "thin"
 
+[package.metadata.dist]
+dist = true
+
 [package.metadata.release]
 push = false
 publish = false
@@ -53,6 +57,5 @@ pre-release-hook = [
     "cliff",
     "-o",
     "CHANGELOG.md",
-    "--tag",
-    "{{version}}",
+    "--latest",
 ]

@@ -57,5 +57,5 @@ pre-release-hook = [
     "cliff",
     "-o",
     "CHANGELOG.md",
-    "--latest",
+    "--tag", "v{{version}}",
 ]

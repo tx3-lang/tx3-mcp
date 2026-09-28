@@ -4,15 +4,16 @@ A [Model Context Protocol](https://modelcontextprotocol.io) server that exposes 
 
 ## What it does
 
-`tx3-mcp` runs as a stdio MCP server and offers seven tools backed by the same `tx3-lang`, `tx3-cardano`, and `tx3-tir` crates that power `trix` and the official LSP:
+`tx3-mcp` runs as a stdio MCP server and offers eight tools backed by the same `tx3-lang`, `tx3-cardano`, and `tx3-tir` crates that power `trix` and the official LSP:
 
 | Tool | Purpose |
 | --- | --- |
 | `tx3_parse` | Parse a Tx3 source string and return its AST or structured parse errors. |
 | `tx3_check` | Run the analyzer over a Tx3 source string or file and return diagnostics with line/column spans. |
 | `tx3_lower` | Lower a single named transaction to its TIR JSON. |
-| `tx3_compile` | Lower, apply arguments, and compile a transaction against Cardano protocol parameters. |
+| `tx3_apply_args` | Lower a transaction, apply a JSON object of named arguments, and return the post-args TIR. |
 | `tx3_inspect_project` | Read a `trix.toml`, build a workspace, and summarize transactions/parties/assets. |
+| `tx3_invoke` | Resolve a transaction against the project's TRP endpoint and return the unsigned tx CBOR and hash. It does not sign or submit. |
 | `tx3_examples_list` | List the curated example programs bundled into the binary. |
 | `tx3_example_get` | Return the source of a bundled example. |
 
@@ -20,7 +21,13 @@ Diagnostics are rendered as structured JSON with severity, code, message, help, 
 
 ## Installation
 
-The recommended way to install `tx3-mcp` is via [`tx3up`](https://github.com/tx3-lang/tx3up), which manages the entire Tx3 toolchain:
+`tx3-mcp` ships with the Tx3 toolchain and is installed by [`tx3up`](https://github.com/tx3-lang/tx3up), which manages the entire toolchain. If you don't have `tx3up` yet, install it with its bootstrap script:
+
+```sh
+curl --proto '=https' --tlsv1.2 -LsSf https://github.com/tx3-lang/tx3up/releases/latest/download/tx3up-installer.sh | sh
+```
+
+Then install the toolchain:
 
 ```sh
 tx3up
@@ -32,11 +39,7 @@ This places `tx3-mcp` in `~/.tx3/<channel>/bin/`, which `tx3up` adds to your `PA
 tx3-mcp --version
 ```
 
-Alternatively, install directly from crates.io:
-
-```sh
-cargo install tx3-mcp
-```
+`tx3-mcp` is not published to crates.io. Prebuilt binaries are also attached to each [GitHub release](https://github.com/tx3-lang/tx3-mcp/releases).
 
 ## Use in Claude Code
 
@@ -60,7 +63,7 @@ To use `tx3-mcp` from any MCP-compatible client (editor extensions, custom agent
 
 ## Compatibility
 
-`tx3-mcp` 0.1.x is compatible with **tx3 0.17.x**. The dependency is pinned (`tx3-lang = "=0.17"`) in `Cargo.toml`; new tx3 minor releases require a corresponding tx3-mcp release. Compatibility for newer tx3 versions will be tracked in this README and in the [`tx3-lang/toolchain`](https://github.com/tx3-lang/toolchain) channel manifest consumed by `tx3up`.
+`tx3-mcp` 0.5.x is built against **tx3-lang 0.22** (`tx3-lang = "=0.22.0"` in `Cargo.toml`), so new tx3 minor releases require a corresponding tx3-mcp release. The [`tx3-lang/toolchain`](https://github.com/tx3-lang/toolchain) channel manifest consumed by `tx3up` pins the tx3-mcp version that matches the rest of the toolchain.
 
 ## License
 
